@@ -26,11 +26,9 @@ jobs:
     - name: Convert PDF to HTML
       run: |
         python process_pdf.py
+      continue-on-error: true
 
-    - name: Commit HTML file
+    - name: Print logs
+      if: failure()
       run: |
-        git config --global user.name 'github-actions'
-        git config --global user.email 'github-actions@github.com'
-        git add *.html
-        git commit -m 'Add converted HTML files'
-        git push
+        cat /home/runner/work/_temp/_runner_file_commands/echo.txt
