@@ -1,0 +1,36 @@
+name: PDF to HTML
+
+on:
+  push:
+    paths:
+      - '*.pdf'
+  workflow_dispatch:
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        pip install pymupdf
+
+    - name: Convert PDF to HTML
+      run: |
+        python process_pdf.py
+
+    - name: Commit HTML file
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git add *.html
+        git commit -m 'Add converted HTML files'
+        git push
